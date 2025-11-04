@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using WebCatalog.Data.Configurations;
 using WebCatalog.Models;
 
 namespace WebCatalog.Data
@@ -13,7 +14,7 @@ namespace WebCatalog.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            modelBuilder.ApplyConfiguration(new UnitConfiguration());
+            modelBuilder.ApplyConfiguration(new UnitConfigurations());
         }
 
     }
