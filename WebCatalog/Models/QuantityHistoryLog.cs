@@ -1,8 +1,8 @@
 ﻿namespace WebCatalog.Models
 {
-    public class QuantityHistory
+    public class QuantityHistoryLog
     {
-        public QuantityHistory(int unitId, int newUnitQuantity, DateTime dateOfChange, Guid userId)
+        public QuantityHistoryLog(int unitId, int newUnitQuantity, DateTime dateOfChange, Guid userId)
         {
 
             UnitId = unitId;
@@ -10,7 +10,7 @@
             DateOfChange = dateOfChange;
             UserId = userId;
         }
-        public QuantityHistory() { }
+        public QuantityHistoryLog() { }
         public Guid UserId { get; set; }
         public int Id { get; set; }
         public int UnitId { get; protected set; }

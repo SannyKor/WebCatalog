@@ -14,7 +14,7 @@
         public double Price { get; set; }
         public int Quantity { get; set; }
         public DateTime AddedDate { get; set; } = DateTime.Now;
-        public List<QuantityHistory> QuantityHistory { get; set; } = new List<QuantityHistory>();
+        public List<QuantityHistoryLog> QuantityHistory { get; set; } = new List<QuantityHistoryLog>();
         public List<Category> Categories { get; set; } = new List<Category>();
 
         

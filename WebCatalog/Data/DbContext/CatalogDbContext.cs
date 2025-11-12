@@ -2,7 +2,7 @@
 using WebCatalog.Data.Configurations;
 using WebCatalog.Models;
 
-namespace WebCatalog.Data
+namespace WebCatalog.Data.DbContext
 {
     public class CatalogDbContext : DbContext
     {
@@ -10,7 +10,7 @@ namespace WebCatalog.Data
         public DbSet<Unit> Units { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<User> Users { get; set; }
-        public DbSet<QuantityHistory> QuantityHistories { get; set; }
+        public DbSet<QuantityHistoryLog> QuantityHistories { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
