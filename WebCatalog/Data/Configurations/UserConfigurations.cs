@@ -8,7 +8,7 @@ namespace WebCatalog.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<User> entity)
         {
-            //entity.ToTable("Users");
+            entity.ToTable("Users");
             entity.HasKey(u => u.Id);
             entity.Property(u => u.Id)
                   .ValueGeneratedNever();
@@ -21,6 +21,14 @@ namespace WebCatalog.Data.Configurations
             entity.HasIndex(u => u.Email)
                   .IsUnique();
             entity.Property(u => u.PasswordHash)
+                  .IsRequired();
+            entity.Property(u => u.Salt)
+                  .IsRequired();
+            entity.Property(u => u.Role)
+                  .IsRequired()
+                  .HasConversion<string>()
+                  .HasMaxLength(20);
+            entity.Property(u => u.CreatedAt)
                   .IsRequired();
         }
     }

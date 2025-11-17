@@ -8,7 +8,7 @@ namespace WebCatalog.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<Category> entity)
         {
-            //entity.ToTable("Categories");
+            entity.ToTable("Categories");
             entity.HasKey(c => c.Id);
             entity.Property(c => c.Name)
                   .IsRequired()

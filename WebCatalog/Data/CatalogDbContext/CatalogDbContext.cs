@@ -2,7 +2,7 @@
 using WebCatalog.Data.Configurations;
 using WebCatalog.Models;
 
-namespace WebCatalog.Data.DbContext
+namespace WebCatalog.Data
 {
     public class CatalogDbContext : DbContext
     {
@@ -14,7 +14,7 @@ namespace WebCatalog.Data.DbContext
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            modelBuilder.ApplyConfiguration(new UnitConfigurations());
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(CatalogDbContext).Assembly);
         }
 
     }

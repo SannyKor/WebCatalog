@@ -1,7 +1,15 @@
+using WebCatalog.Data;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Data.Sqlite;
+
+
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddDbContext<CatalogDbContext>(options => options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // Add services to the container.
 
+ // Добавьте эту строку
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
