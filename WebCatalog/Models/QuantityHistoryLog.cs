@@ -13,8 +13,8 @@
         public QuantityHistoryLog() { }
         public Guid UserId { get; set; }
         public int Id { get; set; }
-        public int UnitId { get; protected set; }
-        public int NewUnitQuantity { get; protected set; }
-        public DateTime DateOfChange { get; protected set; }
+        public int UnitId { get; set; }
+        public int NewUnitQuantity { get; set; }
+        public DateTime DateOfChange { get; set; }
     }
 }

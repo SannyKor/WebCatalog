@@ -1,10 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using WebCatalog.Data;
 using WebCatalog.Models;
+using WebCatalog.Services.Interfaces;
+
 
 namespace WebCatalog.Services.Implementations
 {
-    public class UnitService
+    public class UnitService : UnitServiceInterface
     {
         private readonly CatalogDbContext _context;
         public UnitService(CatalogDbContext context)
@@ -33,11 +35,30 @@ namespace WebCatalog.Services.Implementations
             existingUnit.Name = unit.Name;
             existingUnit.Description = unit.Description;
             existingUnit.Price = unit.Price;
-            existingUnit.Quantity = unit.Quantity;
+
+            bool isQuantityChanged = _context.Entry(existingUnit).Property(u => u.Quantity).IsModified;
+            if (isQuantityChanged)
+            {
+                await _context.Entry(existingUnit).Collection(u => u.QuantityHistory).LoadAsync();
+                var quantityLog = new QuantityHistoryLog ()
+                {                    
+                    UnitId = unit.Id,                    
+                    NewUnitQuantity = unit.Quantity,
+                    DateOfChange = DateTime.UtcNow,
+                    //UserId = currentUser.Id // Assume currentUser is obtained from the context/session
+                };
+                existingUnit.QuantityHistory.Add (quantityLog);                
+            }
             await _context.SaveChangesAsync();
             return true;
-
-
+        }
+        public async Task<bool> DeleteUnitAsync (int id)
+        {
+            var unit = await _context.Units.FindAsync(id);
+            if (unit == null) { return false; }
+            _context.Units.Remove(unit);
+            await _context.SaveChangesAsync();
+            return true;
         }
     }
 }
