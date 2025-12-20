@@ -1,6 +1,8 @@
 using WebCatalog.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Data.Sqlite;
+using WebCatalog.Services.Implementations;
+using WebCatalog.Services.Interfaces;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,6 +16,7 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
 
 var app = builder.Build();
 

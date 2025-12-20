@@ -1,12 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Security.Cryptography.X509Certificates;
 using WebCatalog.Data;
+using WebCatalog.DTOs.Requests;
 using WebCatalog.Models;
 using WebCatalog.Services.Interfaces;
 
 namespace WebCatalog.Services.Implementations
 {
-    public class CategoryService : CategoryServiceInterface
+    public class CategoryService : ICategoryService
     {
         private readonly CatalogDbContext _context;
         public CategoryService(CatalogDbContext context)
@@ -34,8 +35,9 @@ namespace WebCatalog.Services.Implementations
                 .AsNoTracking()
                 .ToListAsync();
         }
-        public async Task<Category> AddCategoryAsync(Category category)
+        public async Task<Category> AddCategoryAsync(CategoryCreatDto categoryDto)
         {
+            Category category = new Category(categoryDto.CategoryName, categoryDto.ParentId);
             _context.Categories.Add(category);
             await _context.SaveChangesAsync();
             return category;
@@ -51,10 +53,12 @@ namespace WebCatalog.Services.Implementations
         public async Task<Category?> UpdateCategoryAsync(Category category)
         {
             var existingCategory = await _context.Categories.FindAsync(category.Id);
-            { if (existingCategory == null) { return null; } }
+            if (existingCategory == null) { return null; } 
             existingCategory.Name = category.Name;
-            existingCategory.ParentId = category.ParentId;
-            exi
+            existingCategory.ParentId = category.ParentId;           
+            await _context.SaveChangesAsync();
+            return existingCategory;
         }
+        public async Task<>
     }
 }
