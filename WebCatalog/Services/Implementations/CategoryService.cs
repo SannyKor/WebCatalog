@@ -2,6 +2,7 @@
 using System.Security.Cryptography.X509Certificates;
 using WebCatalog.Data;
 using WebCatalog.DTOs.Requests;
+using WebCatalog.DTOs.Responses;
 using WebCatalog.Models;
 using WebCatalog.Services.Interfaces;
 
@@ -13,17 +14,34 @@ namespace WebCatalog.Services.Implementations
         public CategoryService(CatalogDbContext context)
         { _context = context; }
 
-        public async Task<IEnumerable<Category>> GetAllAsync()
+        public async Task<IEnumerable<CategoryDto>> GetAllAsync()
         {
-            return await _context.Categories.ToListAsync();
+            return await _context.Categories
+                .Select(c => new CategoryDto 
+                {
+                    Id = c.Id, Name = c.Name 
+                })
+                .ToListAsync();
         }
-        public async Task<IEnumerable<Category>> GetParentCategoriesAsync()
+        public async Task<IEnumerable<CategoryDto>> GetParentCategoriesAsync()
         {
-            return await _context.Categories.Where(c => c.ParentId == null).ToListAsync();
+            return await _context.Categories
+                .Where(c => c.ParentId == null)
+                .Select(c => new CategoryDto 
+                {
+                    Id = c.Id, Name = c.Name
+                })
+                .ToListAsync();
         }
-        public async Task<Category?> GetCategoryByIdAsync(int id)
+        public async Task<CategoryDto?> GetCategoryByIdAsync(int id)
         {
-            return await _context.Categories.FindAsync(id);
+            return await _context.Categories
+                .Where(c => id == c.Id)
+                .Select(c => new CategoryDto 
+                { 
+                    Id = c.Id, Name = c.Name
+                })
+                .FirstOrDefaultAsync();
         }
         public async Task<IEnumerable<Category>> GetCategoryByNameAsync(string Name)
         {
@@ -35,12 +53,12 @@ namespace WebCatalog.Services.Implementations
                 .AsNoTracking()
                 .ToListAsync();
         }
-        public async Task<Category> AddCategoryAsync(CategoryCreatDto categoryDto)
+        public async Task<int> AddCategoryAsync(CategoryCreateDto categoryDto)
         {
             Category category = new Category(categoryDto.CategoryName, categoryDto.ParentId);
             _context.Categories.Add(category);
             await _context.SaveChangesAsync();
-            return category;
+            return category.Id;
         }
         public async Task<bool> DeleteAsync(int id)
         {
